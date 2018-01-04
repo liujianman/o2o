@@ -2,6 +2,7 @@ package com.kgy.o2o.entity;
 
 import java.util.Date;
 
+
 /**
  * Created by ljm on 2018/1/3.
  */
@@ -20,8 +21,8 @@ public class Shop {
     //建议
     private String advice;
     private Area area;
-   private PersonInfo owner;
-   private  ShopCategory shopCategory;
+    private PersonInfo owner;
+    private  ShopCategory shopCategory;
 
     public Long getShopId() {
         return shopId;
