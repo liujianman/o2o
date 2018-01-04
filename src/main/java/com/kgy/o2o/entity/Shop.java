@@ -20,6 +20,7 @@ public class Shop {
     private Integer enableStatus;
     //建议
     private String advice;
+
     private Area area;
     private PersonInfo owner;
     private  ShopCategory shopCategory;

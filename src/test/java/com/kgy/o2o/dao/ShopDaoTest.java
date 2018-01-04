@@ -17,6 +17,7 @@ import static org.junit.Assert.*;
  * @Date: Created in 15:15 2018/1/4
  */
 public class ShopDaoTest extends BaseTest{
+
     @Autowired
     private ShopDao shopDao;
     @Test
@@ -41,7 +42,16 @@ public class ShopDaoTest extends BaseTest{
         shop.setAdvice("审核中");
         int effectedNum =shopDao.insertShop(shop);
         assertEquals(1,effectedNum);
-
+    }
+    @Test
+    public void updateShop() throws Exception {
+        Shop shop=new Shop();
+        shop.setShopId(2L);
+        shop.setShopDesc("测试描述");
+        shop.setShopAddr("测试地址");
+        shop.setLastEditTime(new Date());
+        int effectedNum =shopDao.updateShop(shop);
+        assertEquals(1,effectedNum);
     }
 
 }
