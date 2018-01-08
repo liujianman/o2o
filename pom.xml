@@ -114,7 +114,7 @@
     <artifactId>spring-webmvc</artifactId>
     <version>${spring.version}</version>
   </dependency>
-  <!-- 4)Spring test -->
+  <!-- 4)Spring ImageUtil -->
   <dependency>
     <groupId>org.springframework</groupId>
     <artifactId>spring-test</artifactId>
@@ -144,13 +144,14 @@
     <artifactId>commons-collections</artifactId>
     <version>3.2</version>
   </dependency>
-  <!-- https://mvnrepository.com/artifact/net.coobird/thumbnailator -->
-  <dependency>
-    <groupId>net.coobird</groupId>
-    <artifactId>thumbnailator</artifactId>
-    <version>0.4.8</version>
-  </dependency>
-  <!-- https://mvnrepository.com/artifact/com.github.penggle/kaptcha -->
+    <!-- 图片处理 -->
+    <dependency>
+      <groupId>net.coobird</groupId>
+      <artifactId>thumbnailator</artifactId>
+      <version>0.4.8</version>
+    </dependency>
+
+  <!-- kaptcha验证码 -->
   <dependency>
     <groupId>com.github.penggle</groupId>
     <artifactId>kaptcha</artifactId>
