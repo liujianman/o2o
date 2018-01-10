@@ -2,8 +2,8 @@
  *
  */
 $(function () {
-    var initUrl='/o2o/shop/getshopinitinfo';
-    var registerShopUrl='/o2o/shop/registershop';
+    var initUrl='getshopinitinfo';
+    var registerShopUrl='registershop';
     alert(initUrl);
     getShopInitInfo();
     alert("进来了");
@@ -13,7 +13,7 @@ $(function () {
                 var tempHtml ='';
                 var tempAreaHtml ='';
                 data.shopCategoryList.map(function (item,index) {
-                    tempAreaHtml +='<option data-id=" '+item.shopCategoryId
+                    tempHtml +='<option data-id=" '+item.shopCategoryId
                     + '">'+ item.shopCategoryName + '</option>';
                 });
                 data.areaList.map(function (item,index) {
