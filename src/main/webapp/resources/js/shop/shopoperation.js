@@ -41,20 +41,33 @@ $(function () {
                 }).data('id')
             };
             var shopImg =$('#shop-img')[0].files[0];
-            var formDate =new FormData();
-            formDate.append('shopImg',shopImg);
-            formDate.append('shopStr',JSON.stringify(shop));
+            var formData =new FormData();
+            formData.append('shopImg',shopImg);
+            formData.append('shopStr',JSON.stringify(shop));
+
+            var verifyCodeActual =$('#j_captcha').val();
+            if (!verifyCodeActual){
+                $.toast('请输入验证码');
+                return;
+            }
+            alert(verifyCodeActual);
+            formData.append('verifyCodeActual',verifyCodeActual);
+
+            alert(verifyCodeActual);
+
             $.ajax({
-                url:registerShopUrl,
-                type:'POST',
-                contenType:false,
-                proceesDate:false,
-                cache:false,
-                success:function (data) {
-                    if (data.success){
+                url : registerShopUrl,
+                type : 'POST',
+                data : formData,
+                contentType : false,
+                processData : false,
+                cache : false,
+                success : function(data) {
+                    if (data.success) {
                         $.toast('提交成功！');
-                    }else {
-                        $.toast('提交失败！'+data.errorMsg);
+                    } else {
+                        $.toast('提交失败！');
+                        $('#captcha_img').click();
                     }
                 }
             });

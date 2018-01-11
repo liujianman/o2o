@@ -21,16 +21,20 @@
 	<!-- 3.定义视图解析器 -->
 	<bean id="viewResolver"
 		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-		<property name="prefix" value="/WEB-INF/html/"></property>
-		<property name="suffix" value=".html"></property>
+		<property name="prefix" value="/WEB-INF/html/"/>
+		<property name="suffix" value=".html"/>
 	</bean>
 
 	<!-- 文件上传解析器 -->
 	<bean id="multipartResolver"
 		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
-		<property name="defaultEncoding" value="utf-8"></property>
-		<property name="maxUploadSize" value="10485760000"></property><!-- 最大上传文件大小 -->
-		<property name="maxInMemorySize" value="10960"></property>
+		<!-- 字符编码 -->
+		<property name="defaultEncoding" value="utf-8"/>
+		<!-- 最大上传文件大小 -->
+		<!-- 1024*1024*20=20M -->
+		<property name="maxUploadSize" value="20971520"/>
+		<!-- 最大内存 -->
+		<property name="maxInMemorySize" value="20971520"/>
 	</bean>
 	<!-- 在spring-mvc.xml文件中加入这段配置后，spring返回给页面的都是utf-8编码了 -->
 	<bean

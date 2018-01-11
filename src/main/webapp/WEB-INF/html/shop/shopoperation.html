@@ -28,7 +28,7 @@
             <!--商铺分类  下拉列表-->
             <li>
                 <div class="item-content">
-                    <div class="item-media"><i class="icon icon-form-gender"></i></div>
+                    <div class="item-media"><i class="icon icon-form-categroy"></i></div>
                     <div class="item-inner">
                         <div class="item-title label">店铺分类</div>
                         <div class="item-input">
@@ -41,7 +41,7 @@
             <!--区域分类  下拉列表-->
             <li>
                 <div class="item-content">
-                    <div class="item-media"><i class="icon icon-form-gender"></i></div>
+                    <div class="item-media"><i class="icon icon-form-comment"></i></div>
                     <div class="item-inner">
                         <div class="item-title label">所属区域</div>
                         <div class="item-input">
@@ -54,7 +54,7 @@
             <!--详细地址  text;-->
             <li>
                 <div class="item-content">
-                    <div class="item-media"><i class="icon icon-form-name"></i></div>
+                    <div class="item-media"><i class="icon icon-form-comment"></i></div>
                     <div class="item-inner">
                         <div class="item-title label">详细地址</div>
                         <div class="item-input">
@@ -66,7 +66,7 @@
             <!--联系电话 text-->
             <li>
                 <div class="item-content">
-                    <div class="item-media"><i class="icon icon-form-email"></i></div>
+                    <div class="item-media"><i class="icon icon-form-phone"></i></div>
                     <div class="item-inner">
                         <div class="item-title label">联系电话</div>
                         <div class="item-input">
@@ -79,7 +79,7 @@
             <!--缩略图 上传-->
             <li>
                 <div class="item-content">
-                    <div class="item-media"><i class="icon icon-form-email"></i></div>
+                    <div class="item-media"><i class="icon icon-form-img"></i></div>
                     <div class="item-inner">
                         <div class="item-title label">缩略图</div>
                         <div class="item-input">
@@ -102,18 +102,19 @@
                 </div>
             </li>
             <!--验证码 Kaptcha-->
-
-            <!--<li>-->
-                <!--<div class="item-content">-->
-                    <!--<div class="item-media"><i class="icon icon-form-email"></i></div>-->
-                    <!--<div class="item-inner">-->
-                        <!--<div class="item-title label">邮箱</div>-->
-                        <!--<div class="item-input">-->
-                            <!--<input type="email" placeholder="E-mail">-->
-                        <!--</div>-->
-                    <!--</div>-->
-                <!--</div>-->
-            <!--</li>-->
+            <li>
+                <div class="item-content">
+                    <div class="item-inner">
+                        <div class="item-title label">验证码</div>
+                        <input type="text" id="j_captcha" placeholder="验证码">
+                        <div class="item-input">
+                            <img id="captcha_img" alt="点击更换" title="点击更换"
+                            onclick="changeVerifyCode(this)" src="../Kaptcha">
+                        </div>
+                    </div>
+                </div>
+            </li>
+            <li>
         </ul>
     </div>
     <div class="content-block">
@@ -128,5 +129,7 @@
 <script type='text/javascript' src='//g.alicdn.com/msui/sm/0.6.2/js/sm.min.js' charset='utf-8'></script>
 <script type='text/javascript' src='//g.alicdn.com/msui/sm/0.6.2/js/sm-extend.min.js' charset='utf-8'></script>
 <script type="text/javascript" src="../resources/js/shop/shopoperation.js" charset="UTF-8"></script>
+<script type="text/javascript" src="../resources/js/common/common.js" charset="UTF-8"></script>
+
 </body>
 </html>

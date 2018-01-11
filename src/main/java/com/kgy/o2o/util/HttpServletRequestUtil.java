@@ -46,11 +46,12 @@ public class HttpServletRequestUtil {
 				result = result.trim();
 			}
 			if ("".equals(result)) {
-				result=null;
+				result = null;
 			}
-			return  result;
+				return result;
 		} catch (Exception e) {
 			return null;
 		}
+
 	}
 }

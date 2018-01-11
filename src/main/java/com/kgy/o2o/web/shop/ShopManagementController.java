@@ -9,6 +9,8 @@ import com.kgy.o2o.entity.ShopCategory;
 import com.kgy.o2o.service.AreaService;
 import com.kgy.o2o.service.ShopCategoryService;
 import com.kgy.o2o.service.ShopService;
+
+import com.kgy.o2o.util.CodeUtil;
 import com.kgy.o2o.util.HttpServletRequestUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -63,6 +65,14 @@ public class ShopManagementController {
     @ResponseBody
     private Map<String, Object> registerShop(HttpServletRequest request) {
         Map<String, Object> modelMap = new HashMap<String, Object>();
+
+     //System.out.println("验证码："+HttpServletRequestUtil.getString(request,"verifyCodeActual"));
+        if (!CodeUtil.checkVerifyCode(request)){
+            modelMap.put("success",false);
+            modelMap.put("errorMsg","输入了错误验证码");
+            return modelMap;
+        }
+
         String shopStr = HttpServletRequestUtil.getString(request, "shopStr");
         ObjectMapper mapper = new ObjectMapper();
         Shop shop = null;
@@ -84,6 +94,7 @@ public class ShopManagementController {
             modelMap.put("errorMsg","上传图片失败");
             return modelMap;
         }
+
         if (shop!=null&&shopImg!=null){
             PersonInfo owner = new PersonInfo();
             owner.setUserId(1L);
