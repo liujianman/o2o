@@ -21,6 +21,14 @@ public class ShopDaoTest extends BaseTest{
     @Autowired
     private ShopDao shopDao;
     @Test
+    public void queryByShopId() throws Exception {
+        long shopId =2;
+        Shop shop =shopDao.queryByShopId(shopId);
+        System.out.println("ID:"+shop.getArea().getAreaId());
+        System.out.println("name:"+shop.getArea().getAreaName());
+    }
+
+    @Test
     public void insertShop() throws Exception {
         Shop shop=new Shop();
         PersonInfo owner = new PersonInfo();
