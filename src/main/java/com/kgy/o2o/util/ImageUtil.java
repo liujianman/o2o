@@ -6,6 +6,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Random;
 
+import com.sun.javafx.scene.shape.PathUtils;
 import net.coobird.thumbnailator.Thumbnails;
 
 import net.coobird.thumbnailator.geometry.Positions;
@@ -69,5 +70,17 @@ public class ImageUtil {
         int rannum = r.nextInt(89999)+10000;
         String nowTimerStr=sDateFormat.format(new Date());
         return nowTimerStr + rannum;
+    }
+
+    public static void deleteFileOrPath(String storePath){
+        File fileOrPath=new File(FileUtil.getImgBasePath()+storePath);
+        if (fileOrPath.exists()){
+            if (fileOrPath.isDirectory()){
+                File files[]=fileOrPath.listFiles();
+                for (int i = 0; i <files.length ; i++){
+                    files[i].delete();
+                }
+            }fileOrPath.delete();
+        }
     }
 }

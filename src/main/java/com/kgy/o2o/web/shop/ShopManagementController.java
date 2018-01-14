@@ -42,6 +42,35 @@ public class ShopManagementController {
     @Autowired
     private AreaService areaService;
 
+    /**
+     * 通过ID查询店铺信息
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "/getshopbyid",method = RequestMethod.GET)
+    @ResponseBody
+    private Map<String,Object>getShopById(HttpServletRequest request){
+        Map<String,Object>modelMap=new HashMap<String, Object>();
+        Long shopId =HttpServletRequestUtil.getLong(request,"shopId");
+        if (shopId >-1) {
+            try {
+                Shop shop = shopService.getByShopId(shopId);
+                List<Area> areaList = areaService.getAreaList();
+                modelMap.put("shop", shop);
+                modelMap.put("areaList", areaList);
+                modelMap.put("success", true);
+            }catch (Exception e){
+                modelMap.put("success",false);
+                modelMap.put("error",e.toString());
+            }
+        }
+        return modelMap;
+    }
+
+    /**
+     * 获取店铺信息
+     * @return
+     */
     @RequestMapping(value = "/getshopinitinfo",method = RequestMethod.GET)
     @ResponseBody
     private Map<String,Object>getShopinitInfo(){
@@ -61,6 +90,11 @@ public class ShopManagementController {
         return modelMap;
     }
 
+    /**
+     * 店铺信息注册
+     * @param request
+     * @return
+     */
     @RequestMapping(value = "/registershop", method = RequestMethod.POST)
     @ResponseBody
     private Map<String, Object> registerShop(HttpServletRequest request) {

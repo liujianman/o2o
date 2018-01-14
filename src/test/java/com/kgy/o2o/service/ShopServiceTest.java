@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.Date;
 
 import static org.junit.Assert.*;
@@ -47,6 +48,14 @@ public class ShopServiceTest extends BaseTest{
 //        CommonsMultipartFile shopImg = new CommonsMultipartFile("C:\\Users\\Administrator\\Desktop\\image\\cc.jpg");
 //        ShopExecution shopStateEnum =shopService.addShop(shop,shopImg);
 //        assertEquals(ShopStateEnum.CHECK.getState(),shopStateEnum.getState());
+    }
+    @Test
+    public void testmodifyShop()throws RuntimeException,FileNotFoundException{
+//        Shop shop =new Shop();
+//        shop.setShopId(2L);
+//        shop.setShopName("修改后的店铺名称");
+//        CommonsMultipartFile shopImg = new CommonsMultipartFile();
+//        ShopExecution shopStateEnum =shopService.addShop(shop);
     }
 
 }
