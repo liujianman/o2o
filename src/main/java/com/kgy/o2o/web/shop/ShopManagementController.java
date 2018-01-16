@@ -6,6 +6,7 @@ import com.kgy.o2o.entity.Area;
 import com.kgy.o2o.entity.PersonInfo;
 import com.kgy.o2o.entity.Shop;
 import com.kgy.o2o.entity.ShopCategory;
+import com.kgy.o2o.enums.ShopStateEnum;
 import com.kgy.o2o.service.AreaService;
 import com.kgy.o2o.service.ShopCategoryService;
 import com.kgy.o2o.service.ShopService;
@@ -22,6 +23,7 @@ import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -67,6 +69,78 @@ public class ShopManagementController {
         return modelMap;
     }
 
+
+    /**
+     * 修改shop信息
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "/modifyshop", method = RequestMethod.POST)
+    @ResponseBody
+    private Map<String, Object> modifyShop(HttpServletRequest request) {
+        Map<String, Object> modelMap = new HashMap<String, Object>();
+
+        if (!CodeUtil.checkVerifyCode(request)) {
+            modelMap.put("success", false);
+            modelMap.put("errorMsg", "输入了错误验证码");
+            return modelMap;
+        }
+
+        String shopStr = HttpServletRequestUtil.getString(request, "shopStr");
+        ObjectMapper mapper = new ObjectMapper();
+        Shop shop = null;
+        try {
+            shop = mapper.readValue(shopStr, Shop.class);
+        } catch (Exception e) {
+            modelMap.put("success", false);
+            modelMap.put("errorMsg", e.getMessage());
+            return modelMap;
+        }
+        CommonsMultipartFile shopImg = null;
+        CommonsMultipartResolver commonsMultipartResolver = new CommonsMultipartResolver(
+                request.getSession().getServletContext());
+        if (commonsMultipartResolver.isMultipart(request)) {
+            MultipartHttpServletRequest multipartHttpServletRequest = (MultipartHttpServletRequest) request;
+            shopImg = (CommonsMultipartFile) multipartHttpServletRequest.getFile("shopImg");
+        }
+
+        //修改店铺信息
+        if (shop != null && shop.getShopId() != null) {
+            PersonInfo owner = (PersonInfo) request.getSession().getAttribute("user");
+            shop.setOwner(owner);
+            ShopExecution se;
+            try {
+                if (shopImg == null) {
+                    se = shopService.modifyShop(shop, null);
+                } else {
+                    se = shopService.addShop(shop, shopImg);
+                }
+                if (se.getState() == ShopStateEnum.SUCCESS.getState()) {
+                    modelMap.put("success", true);
+                  List<Shop>shopList= (List<Shop>) request.getSession().getAttribute("shopList");
+                  if (shopList ==null||shopList.size()==0){
+                      shopList=new ArrayList<Shop>();
+                  }
+                  shopList.add(se.getShop());
+                  request.getSession().setAttribute("shopList",shopList);
+
+                } else {
+                    modelMap.put("success", false);
+                    modelMap.put("errorMsg", se.getStateInfo());
+                }
+            } catch (RuntimeException e) {
+                modelMap.put("success", false);
+                modelMap.put("errorMsg", e.getMessage());
+            }
+            return modelMap;
+        } else {
+            modelMap.put("success", false);
+            modelMap.put("errorMsg", "请输入店铺ID");
+            return modelMap;
+        }
+    }
+
+
     /**
      * 获取店铺信息
      * @return
@@ -100,7 +174,6 @@ public class ShopManagementController {
     private Map<String, Object> registerShop(HttpServletRequest request) {
         Map<String, Object> modelMap = new HashMap<String, Object>();
 
-     //System.out.println("验证码："+HttpServletRequestUtil.getString(request,"verifyCodeActual"));
         if (!CodeUtil.checkVerifyCode(request)){
             modelMap.put("success",false);
             modelMap.put("errorMsg","输入了错误验证码");

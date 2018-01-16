@@ -2,11 +2,42 @@
  *
  */
 $(function () {
+    var shopId=getQueryString('shopId');
+    var isEdit = shopId?true:false;
     var initUrl='getshopinitinfo';
     var registerShopUrl='registershop';
-    alert(initUrl);
-    getShopInitInfo();
-    alert("进来了");
+    var shopInfoUrl="getshopbyid?shopid="+shopId;
+    var editShopUrl='modifyshop';
+    if (!isEdit) {
+        getShopInitInfo()
+    } else {
+        getShopInfo(shopId);
+    }
+
+    function getShopInfo(shopId) {
+        alert("进来了");
+        $.getJSON(shopInfoUrl,function (data) {
+        if (data.success) {
+            var shop = data.shop;
+            $('#shop-name').val(shop.shopName);
+            $('#shop-addr').val(shop.shopAddr);
+            $('#shop-phone').val(shop.phone);
+            $('#shop-desc').val(shop.shopDesc);
+            var shopCategory = '<option data-id="'
+                + shop.shopCategory.shopCategoryId + '" selected>'
+                + shop.shopCategory.shopCategoryName + '</option>';
+            var tempAreaHtml = '';
+            data.areaList.map(function(item, index) {
+                tempAreaHtml += '<option data-id="' + item.areaId + '">'
+                    + item.areaName + '</option>';
+            });
+            $('#shop-category').html(shopCategory);
+            $('#shop-category').attr('disabled','disabled');
+            $('#area').html(tempAreaHtml);
+            $('#area').attr('data-id',shop.areaId);
+        }
+        });
+    }
     function getShopInitInfo() {
         $.getJSON(initUrl,function (data) {
             if (data.success){
@@ -56,7 +87,7 @@ $(function () {
             alert(verifyCodeActual);
 
             $.ajax({
-                url : registerShopUrl,
+                url : (isEdit?editShopUrl:registerShopUrl),
                 type : 'POST',
                 data : formData,
                 contentType : false,
@@ -74,4 +105,4 @@ $(function () {
         });
 
     }
-})
+});
