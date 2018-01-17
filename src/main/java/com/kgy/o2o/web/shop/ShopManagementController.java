@@ -63,8 +63,11 @@ public class ShopManagementController {
                 modelMap.put("success", true);
             }catch (Exception e){
                 modelMap.put("success",false);
-                modelMap.put("error",e.toString());
+                modelMap.put("errorMsg",e.toString());
             }
+        }else{
+            modelMap.put("success",false);
+            modelMap.put("errorMsg","empty shopId");
         }
         return modelMap;
     }
@@ -85,7 +88,7 @@ public class ShopManagementController {
             modelMap.put("errorMsg", "输入了错误验证码");
             return modelMap;
         }
-
+        //接受参数
         String shopStr = HttpServletRequestUtil.getString(request, "shopStr");
         ObjectMapper mapper = new ObjectMapper();
         Shop shop = null;

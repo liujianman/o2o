@@ -6,7 +6,7 @@ $(function () {
     var isEdit = shopId?true:false;
     var initUrl='getshopinitinfo';
     var registerShopUrl='registershop';
-    var shopInfoUrl="getshopbyid?shopid="+shopId;
+    var shopInfoUrl='getshopbyid?shopId=' + shopId;
     var editShopUrl='modifyshop';
     if (!isEdit) {
         getShopInitInfo()
@@ -17,6 +17,7 @@ $(function () {
     function getShopInfo(shopId) {
         alert("进来了");
         $.getJSON(shopInfoUrl,function (data) {
+            alert("进来了");
         if (data.success) {
             var shop = data.shop;
             $('#shop-name').val(shop.shopName);
