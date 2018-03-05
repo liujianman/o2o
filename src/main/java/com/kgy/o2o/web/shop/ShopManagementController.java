@@ -44,6 +44,60 @@ public class ShopManagementController {
     @Autowired
     private AreaService areaService;
 
+    @RequestMapping(value = "getshopmanagementinfo",method = RequestMethod.GET)
+    @ResponseBody
+    private Map<String,Object>getShopManagementInfo(HttpServletRequest request){
+        Map<String,Object>modelMap = new HashMap<String, Object>();
+        long shopId =HttpServletRequestUtil.getLong(request,"shopId");
+        if (shopId <=0){
+            Object currentShopObj =request.getSession().getAttribute("currentShop");
+            if (currentShopObj==null){
+                modelMap.put("redirect",true);
+                modelMap.put("url","shop/shoplist");
+            }else {
+                Shop currentShop= (Shop) currentShopObj;
+                modelMap.put("redirect",false);
+                modelMap.put("shopId",currentShop.getShopId());
+            }
+        }else {
+            Shop currentShop =new Shop();
+            currentShop.setShopId(shopId);
+            request.getSession().setAttribute("currentShop",currentShop);
+            modelMap.put("redirect",false);
+        }
+        return modelMap;
+    }
+
+     /**
+      * @author ljm
+      * 获取店铺集
+      * @param
+      * @return   modelmap
+      */
+    @RequestMapping(value = "/getshoplist",method = RequestMethod.GET)
+    @ResponseBody
+    private Map<String,Object> getShopList(HttpServletRequest request){
+        Map<String,Object> modelMap = new HashMap<String,Object>();
+        PersonInfo user = new PersonInfo();
+        user.setUserId(1L);
+        user.setName("test");
+        request.getSession().setAttribute("user",user);
+        user= (PersonInfo) request.getSession().getAttribute("user");
+        try {
+            Shop shopCondition =new Shop();
+            shopCondition.setOwner(user);
+            ShopExecution se =shopService.getShopList(shopCondition,0,100);
+            modelMap.put("shopList",se.getShopList());
+            modelMap.put("user",user);
+            modelMap.put("success",true);
+        }catch (Exception e){
+          modelMap.put("success",false);
+          modelMap.put("errMsg",e.getMessage());
+        }
+        return modelMap;
+    }
+
+
     /**
      * 通过ID查询店铺信息
      * @param request
@@ -109,24 +163,15 @@ public class ShopManagementController {
 
         //修改店铺信息
         if (shop != null && shop.getShopId() != null) {
-            PersonInfo owner = (PersonInfo) request.getSession().getAttribute("user");
-            shop.setOwner(owner);
             ShopExecution se;
             try {
                 if (shopImg == null) {
                     se = shopService.modifyShop(shop, null);
                 } else {
-                    se = shopService.addShop(shop, shopImg);
+                    se = shopService.modifyShop(shop, shopImg);
                 }
                 if (se.getState() == ShopStateEnum.SUCCESS.getState()) {
                     modelMap.put("success", true);
-                  List<Shop>shopList= (List<Shop>) request.getSession().getAttribute("shopList");
-                  if (shopList ==null||shopList.size()==0){
-                      shopList=new ArrayList<Shop>();
-                  }
-                  shopList.add(se.getShop());
-                  request.getSession().setAttribute("shopList",shopList);
-
                 } else {
                     modelMap.put("success", false);
                     modelMap.put("errorMsg", se.getStateInfo());
@@ -206,10 +251,31 @@ public class ShopManagementController {
         }
 
         if (shop!=null&&shopImg!=null){
-            PersonInfo owner = new PersonInfo();
-            owner.setUserId(1L);
-            shop.setOwner(owner);
-            ShopExecution se=shopService.addShop(shop,shopImg);
+                PersonInfo owner = (PersonInfo) request.getSession().getAttribute("user");
+                shop.setOwner(owner);
+                ShopExecution se;
+                try{
+                    se=shopService.addShop(shop,shopImg);
+                    if (se.getState()==ShopStateEnum.CHECK.getState()){
+                        modelMap.put("success",true);
+                        //用户可以操作的店铺
+                        @SuppressWarnings("unchecked")
+                        List<Shop>shopList = (List<Shop>) request.getSession().getAttribute("shopList");
+                        if (shopList==null ||shopList.size()==0){
+                            shopList =new ArrayList<Shop>();
+                        }
+                        shopList.add(se.getShop());
+                        request.getSession().setAttribute("shopList",shopList);
+                    }else{
+                        modelMap.put("success", false);
+                        modelMap.put("errMsg", se.getStateInfo());
+                    }
+                }catch (RuntimeException e) {
+                    modelMap.put("success", false);
+                    modelMap.put("errMsg", e.toString());
+                    return modelMap;
+                }
+
         }else {
             modelMap.put("success",false);
             modelMap.put("errorMsg","请输入信息");

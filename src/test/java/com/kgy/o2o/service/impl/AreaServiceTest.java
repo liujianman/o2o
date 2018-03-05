@@ -1,7 +1,8 @@
-package com.kgy.o2o.service;
+package com.kgy.o2o.service.impl;
 
 import com.kgy.o2o.dao.BaseTest;
 import com.kgy.o2o.entity.Area;
+import com.kgy.o2o.service.AreaService;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 

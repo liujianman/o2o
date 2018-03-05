@@ -1,5 +1,6 @@
 package com.kgy.o2o.service.impl;
 
+import com.kgy.o2o.dao.ShopCategoryDao;
 import com.kgy.o2o.dao.ShopDao;
 import com.kgy.o2o.dto.ShopExecution;
 import com.kgy.o2o.entity.Shop;
@@ -7,6 +8,7 @@ import com.kgy.o2o.enums.ShopStateEnum;
 import com.kgy.o2o.service.ShopService;
 import com.kgy.o2o.util.FileUtil;
 import com.kgy.o2o.util.ImageUtil;
+import com.kgy.o2o.util.PageCalculator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,6 +16,7 @@ import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import java.io.File;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @Author: 刘健明
@@ -24,6 +27,23 @@ import java.util.Date;
 public class ShopServiceImpl implements ShopService{
     @Autowired
     private ShopDao shopDao;
+    @Autowired
+    private ShopCategoryDao shopCategoryDao;
+
+    @Override
+    public ShopExecution getShopList(Shop shopCondition, int pageIndex, int pageSize) {
+        int rowIndex = PageCalculator.calculateRowIndex(pageIndex,pageSize);
+        List<Shop>shopList =shopDao.queryShopList(shopCondition,rowIndex,pageSize);
+        int count =shopDao.queryShopCount(shopCondition);
+        ShopExecution se =new ShopExecution();
+        if (shopList!=null){
+            se.setShopList(shopList);
+            se.setCount(count);
+        }else {
+            se.setState(ShopStateEnum.INNER_ERROR.getState());
+        }
+        return se;
+    }
 
     @Override
     @Transactional
@@ -40,7 +60,7 @@ public class ShopServiceImpl implements ShopService{
             int effectedNum = shopDao.insertShop(shop);
             if (effectedNum <=0){
                 throw  new RuntimeException("店铺创建失败");
-            }else {
+           } else {
                 if (shopImg != null) {
                     //存储图片
                     try {

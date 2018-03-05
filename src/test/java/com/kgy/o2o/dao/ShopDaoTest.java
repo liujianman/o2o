@@ -4,10 +4,12 @@ import com.kgy.o2o.entity.Area;
 import com.kgy.o2o.entity.PersonInfo;
 import com.kgy.o2o.entity.Shop;
 import com.kgy.o2o.entity.ShopCategory;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Date;
+import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -21,14 +23,16 @@ public class ShopDaoTest extends BaseTest{
     @Autowired
     private ShopDao shopDao;
     @Test
+    @Ignore
     public void queryByShopId() throws Exception {
-        long shopId =2;
+        long shopId =5;
         Shop shop =shopDao.queryByShopId(shopId);
         System.out.println("ID:"+shop.getArea().getAreaId());
         System.out.println("name:"+shop.getArea().getAreaName());
     }
 
     @Test
+    @Ignore
     public void insertShop() throws Exception {
         Shop shop=new Shop();
         PersonInfo owner = new PersonInfo();
@@ -52,6 +56,7 @@ public class ShopDaoTest extends BaseTest{
         assertEquals(1,effectedNum);
     }
     @Test
+    @Ignore
     public void updateShop() throws Exception {
         Shop shop=new Shop();
         shop.setShopId(2L);
@@ -62,4 +67,15 @@ public class ShopDaoTest extends BaseTest{
         assertEquals(1,effectedNum);
     }
 
+    @Test
+    public void queryShopList() {
+        Shop shopCondition =new Shop();
+        PersonInfo owner = new PersonInfo();
+        owner.setUserId(1l);
+        shopCondition.setOwner(owner);
+        List<Shop> shopList=shopDao.queryShopList(shopCondition,0,5);
+        int count =shopDao.queryShopCount(shopCondition);
+        System.out.println("大小："+shopList.size());
+        System.out.println("总数："+count);
+    }
 }

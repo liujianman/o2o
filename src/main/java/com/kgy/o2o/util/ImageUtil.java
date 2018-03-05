@@ -30,8 +30,7 @@ public class ImageUtil {
         String relativeAddr = targetAddr + realFileName + extension;
         File dest = new File(FileUtil.getImgBasePath() + relativeAddr);
         try {
-            Thumbnails.of(thumbnail.getInputStream()).size(200, 200).watermark(Positions.BOTTOM_RIGHT, ImageIO.read(new File(basePath + "/watermark.jpg")), 0.25f)
-                    .outputQuality(0.8f).toFile(dest);
+            Thumbnails.of(thumbnail.getInputStream()).size(200, 200).outputQuality(0.8f).toFile(dest);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -71,7 +70,11 @@ public class ImageUtil {
         String nowTimerStr=sDateFormat.format(new Date());
         return nowTimerStr + rannum;
     }
-
+    /**
+    * @Param:  storePath
+    * @Author: ljm
+    * @Date: 2018/2/5 
+    */
     public static void deleteFileOrPath(String storePath){
         File fileOrPath=new File(FileUtil.getImgBasePath()+storePath);
         if (fileOrPath.exists()){

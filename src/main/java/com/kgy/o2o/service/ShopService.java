@@ -12,9 +12,11 @@ import org.springframework.web.multipart.commons.CommonsMultipartFile;
  * @Date: Created in 14:46 2018/1/5
  */
 public interface ShopService {
+
+    public ShopExecution getShopList(Shop shopCondition, int pageIndex,int pageSize);
+
     /**
      * 注册店铺，包括图片处理
-     *
      * @param shop
      * @param shopImg
      * @return
