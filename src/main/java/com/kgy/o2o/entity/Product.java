@@ -25,7 +25,7 @@ public class Product {
     private Date createTime;
     //商品修改时间
     private Date lastEditTime;
-    //商品状态  0：下架 1：在前端展示
+    //商品状态  0：下架 1： 在前端展示
     private Integer enableStatus;
     //商品图片
     private List<ProductImg> productImgList;
