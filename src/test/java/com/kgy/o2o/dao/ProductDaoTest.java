@@ -116,7 +116,7 @@ public class ProductDaoTest extends BaseTest {
 		productImgList.add(productImg2);
 		int effectedNum = productImgDao.batchInsertProductImg(productImgList);
 		assertEquals(2, effectedNum);
-		Product product = productDao.queryProductByProductId(productId);
+		Product product = productDao.queryProductById(productId);
 		assertEquals(2, product.getProductImgList().size());
 		effectedNum = productImgDao.deleteProductImgByProductId(productId);
 		assertEquals(2, effectedNum);

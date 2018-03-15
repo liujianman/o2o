@@ -31,7 +31,7 @@ public interface ProductDao {
      * @param productId
      * @return
      */
-    Product queryProductByProductId(long productId);
+    Product queryProductById(long productId);
 
     /**
      * 插入商品

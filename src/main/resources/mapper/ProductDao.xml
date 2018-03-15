@@ -104,7 +104,7 @@
             </if>
         </where>
     </select>
-    <select id="queryProductByProductId" resultMap="productMap"
+    <select id="queryProductById" resultMap="productMap"
             parameterType="long">
         <!-- 具体的sql -->
         SELECT

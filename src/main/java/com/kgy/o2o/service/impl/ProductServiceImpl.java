@@ -43,7 +43,7 @@ public class ProductServiceImpl implements ProductService {
 
 	@Override
 	public Product getProductById(long productId) {
-		return productDao.queryProductByProductId(productId);
+		return productDao.queryProductById(productId);
 	}
 
 	@Override
@@ -82,7 +82,7 @@ public class ProductServiceImpl implements ProductService {
 			//设置默认值
 			product.setLastEditTime(new Date());
 			if (thumbnail != null) {
-				Product tempProduct = productDao.queryProductByProductId(product.getProductId());
+				Product tempProduct = productDao.queryProductById(product.getProductId());
 				if (tempProduct.getImgAddr() != null) {
 					FileUtil.deleteFile(tempProduct.getImgAddr());
 				}

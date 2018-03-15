@@ -38,7 +38,7 @@ public class ProductManagementController {
 
 	private static final int IMAGEMAXCOUNT = 6;
 
-	@RequestMapping(value = "/listproductsbyshop", method = RequestMethod.GET)
+	@RequestMapping(value = "/getProductlistbyshop", method = RequestMethod.GET)
 	@ResponseBody
 	private Map<String, Object> listProductsByShop(HttpServletRequest request) {
 		Map<String, Object> modelMap = new HashMap<String, Object>();
@@ -52,7 +52,7 @@ public class ProductManagementController {
 					"productCategoryId");
 			String productName = HttpServletRequestUtil.getString(request,
 					"productName");
-			Product productCondition = compactProductCondition4Search(
+			Product productCondition = compactProductCondition(
 					currentShop.getShopId(), productCategoryId, productName);
 			ProductExecution pe = productService.getProductList(
 					productCondition, pageIndex, pageSize);
@@ -61,7 +61,7 @@ public class ProductManagementController {
 			modelMap.put("success", true);
 		} else {
 			modelMap.put("success", false);
-			modelMap.put("errMsg", "empty pageSize or pageIndex or shopId");
+			modelMap.put("errMsg", "输入页数和商品Id");
 		}
 		return modelMap;
 	}
@@ -84,24 +84,6 @@ public class ProductManagementController {
 		return modelMap;
 	}
 
-//	@RequestMapping(value = "/getproductcategorylistbyshopId", method = RequestMethod.GET)
-//	@ResponseBody
-//	private Map<String, Object> getProductCategoryListByShopId(
-//			HttpServletRequest request) {
-//		Map<String, Object> modelMap = new HashMap<String, Object>();
-//		Shop currentShop = (Shop) request.getSession().getAttribute(
-//				"currentShop");
-//		if ((currentShop != null) && (currentShop.getShopId() != null)) {
-//			List<ProductCategory> productCategoryList = productCategoryService
-//					.getProductCategoryList(currentShop.getShopId());
-//			modelMap.put("productCategoryList", productCategoryList);
-//			modelMap.put("success", true);
-//		} else {
-//			modelMap.put("success", false);
-//			modelMap.put("errMsg", "empty pageSize or pageIndex or shopId");
-//		}
-//		return modelMap;
-//	}
 
 	@RequestMapping(value = "/addproduct", method = RequestMethod.POST)
 	@ResponseBody
@@ -123,16 +105,7 @@ public class ProductManagementController {
 				request.getSession().getServletContext());
 		try {
 			if (multipartResolver.isMultipart(request)) {
-				multipartRequest = (MultipartHttpServletRequest) request;
-				thumbnail = (CommonsMultipartFile) multipartRequest
-						.getFile("thumbnail");
-				for (int i = 0; i < IMAGEMAXCOUNT; i++) {
-					CommonsMultipartFile productImg = (CommonsMultipartFile) multipartRequest
-							.getFile("productImg" + i);
-					if (productImg != null) {
-						productImgs.add(productImg);
-					}
-				}
+				thumbnail = handleImage((MultipartHttpServletRequest) request, productImgs);
 			} else {
 				modelMap.put("success", false);
 				modelMap.put("errMsg", "上传图片不能为空");
@@ -178,17 +151,35 @@ public class ProductManagementController {
 		return modelMap;
 	}
 
+	private CommonsMultipartFile handleImage(MultipartHttpServletRequest request, List<CommonsMultipartFile> productImgs) {
+		MultipartHttpServletRequest multipartRequest;
+		CommonsMultipartFile thumbnail;
+		multipartRequest = request;
+		thumbnail = (CommonsMultipartFile) multipartRequest
+				.getFile("thumbnail");
+		for (int i = 0; i < IMAGEMAXCOUNT; i++) {
+			CommonsMultipartFile productImg = (CommonsMultipartFile) multipartRequest
+					.getFile("productImg" + i);
+			if (productImg != null) {
+				productImgs.add(productImg);
+			}
+		}
+		return thumbnail;
+	}
+
 	@RequestMapping(value = "/modifyproduct", method = RequestMethod.POST)
 	@ResponseBody
 	private Map<String, Object> modifyProduct(HttpServletRequest request) {
 		boolean statusChange = HttpServletRequestUtil.getBoolean(request,
 				"statusChange");
 		Map<String, Object> modelMap = new HashMap<String, Object>();
+
 		if (!statusChange && !CodeUtil.checkVerifyCode(request)) {
 			modelMap.put("success", false);
 			modelMap.put("errMsg", "输入了错误的验证码");
 			return modelMap;
 		}
+
 		ObjectMapper mapper = new ObjectMapper();
 		Product product = null;
 		String productStr = HttpServletRequestUtil.getString(request,
@@ -198,6 +189,7 @@ public class ProductManagementController {
 		List<CommonsMultipartFile> productImgs = new ArrayList<CommonsMultipartFile>();
 		CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver(
 				request.getSession().getServletContext());
+
 		if (multipartResolver.isMultipart(request)) {
 			multipartRequest = (MultipartHttpServletRequest) request;
 			thumbnail = (CommonsMultipartFile) multipartRequest
@@ -245,7 +237,7 @@ public class ProductManagementController {
 		return modelMap;
 	}
 
-	private Product compactProductCondition4Search(long shopId,
+	private Product compactProductCondition(long shopId,
 			long productCategoryId, String productName) {
 		Product productCondition = new Product();
 		Shop shop = new Shop();
