@@ -1,7 +1,7 @@
 $(function () {
-    var shopId=getQueryString('shopId');
-    var listUrl = 'getProductlistbyshop?pageIndex=1&pageSize=9999&shopId='
-        + shopId;
+    // var shopId=getQueryString('shopId');
+    var listUrl = 'getProductlistbyshop?pageIndex=1&pageSize=9999&shopId=';
+        // + shopId;
     var statusUrl = 'modifyproduct';
     getList();
 
@@ -32,7 +32,7 @@ $(function () {
                         + '" data-status="'
                         + item.enableStatus
                         + '">编辑</a>'
-                        + '<a href="#" class="delete" data-id="'
+                        + '<a href="#" class="status" data-id="'
                         + item.productId
                         + '" data-status="'
                         + contraryStatus
@@ -70,9 +70,9 @@ $(function () {
                 }
             });
 
-    $('#new').click(function () {
-        window.location.href = '/myo2o/shop/productedit';
-    });
+    // $('#new').click(function () {
+    //     window.location.href = '/myo2o/shop/productedit';
+    // });
 
 
     function changeItemStatus(id, enableStatus) {

@@ -18,15 +18,8 @@ public class ShopCategoryDaoTest extends BaseTest {
     private ShopCategoryDao shopCategoryDao;
     @Test
     public void queryShopCategory() throws Exception {
-        List<ShopCategory>shopCategoryList = shopCategoryDao.queryShopCategory(new ShopCategory());
-        assertEquals(2, shopCategoryList.size());
-        ShopCategory testCategory =new ShopCategory();
-        ShopCategory parentCategory = new ShopCategory();
-        parentCategory.setShopCategoryId(1L);
-        testCategory.setParentId(parentCategory);
-        shopCategoryList=shopCategoryDao.queryShopCategory(testCategory);
-        assertEquals(1,shopCategoryList.size());
-        System.out.println(shopCategoryList.get(0).getShopCategoryName());
+        List<ShopCategory>shopCategoryList = shopCategoryDao.queryShopCategory(null);
+        System.out.println("大小：" +shopCategoryList.size());
     }
 
 }
