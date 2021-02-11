@@ -6,15 +6,23 @@ import java.util.Date;
  * Created by ljm on 2018/1/2.
  */
 public class PersonInfo {
+    //用户ID
     private Long userId;
+    //用户姓名
     private String name;
+    //用户图片
     private String profileImg;
+    //用户邮箱
     private String email;
+    //用户性别
     private String gender;
+    //用户状态
     private Integer enableStatus;
     //1.顾客 2.店家 3.超级管理员
     private Integer userType;
+    //用户创建时间
     private Date createTime;
+    //用户更新时间
     private Date lastEditTime;
 
     public Long getUserId() {
